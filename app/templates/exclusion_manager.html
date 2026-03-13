@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h3 class="card-title mb-4">Exclusion manager</h3>
+
+        <div id="api-message" class="alert d-none" role="alert"></div>
+
+        <form method="post" novalidate id="exclusion-form">
+          {{ form.hidden_tag() }}
+
+          <div class="mb-3">
+            {{ form.excluded_email.label(class="form-label") }}
+            {% if form.excluded_email.errors %}
+              {{ form.excluded_email(class="form-control is-invalid", placeholder="name@firma.ch", id="excluded_email") }}
+              <div class="invalid-feedback">
+                {% for error in form.excluded_email.errors %}{{ error }}{% endfor %}
+              </div>
+            {% else %}
+              {{ form.excluded_email(class="form-control", placeholder="name@firma.ch", id="excluded_email") }}
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.policy.label(class="form-label") }}
+            {% if form.policy.errors %}
+              {{ form.policy(class="form-select is-invalid", id="policy") }}
+              <div class="invalid-feedback">
+                {% for error in form.policy.errors %}{{ error }}{% endfor %}
+              </div>
+            {% else %}
+              {{ form.policy(class="form-select", id="policy") }}
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.until.label(class="form-label") }}
+            {% if form.until.errors %}
+              {{ form.until(class="form-control is-invalid", type="date", id="until") }}
+              <div class="invalid-feedback">
+                {% for error in form.until.errors %}{{ error }}{% endfor %}
+              </div>
+            {% else %}
+              {{ form.until(class="form-control", type="date", id="until") }}
+            {% endif %}
+          </div>
+
+          <div class="d-grid">
+            {{ form.submit(class="btn btn-primary", id="submit-btn") }}
+          </div>
+        </form>
+
+        <hr class="my-4">
+
+        <h5 class="mb-3">Exclusion Liste anzeigen</h5>
+
+        <form method="post">
+          {{ form.hidden_tag() }}
+          <div class="d-grid mb-3">
+            {{ form.load_db(class="btn btn-secondary") }}
+          </div>
+        </form>
+
+        {% if exclusions %}
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Policy</th>
+                <th>Bis</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for exclusion in exclusions %}
+              <tr>
+                <td>{{ exclusion.id }}</td>
+                <td>{{ exclusion.excluded_email }}</td>
+                <td>{{ exclusion.policy.name }}</td>
+                <td>{{ exclusion.until }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+document.getElementById('exclusion-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const excludedEmail = document.getElementById('excluded_email').value;
+    const policyId = document.getElementById('policy').value;
+    const until = document.getElementById('until').value;
+    const csrfToken = document.querySelector('#exclusion-form input[name="csrf_token"]').value;
+    const messageBox = document.getElementById('api-message');
+
+    messageBox.classList.add('d-none');
+    messageBox.classList.remove('alert-success', 'alert-danger');
+    messageBox.textContent = '';
+
+    try {
+        const response = await fetch('/api/exclusions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({
+                excluded_email: excludedEmail,
+                policy_id: policyId,
+                until: until
+            })
+        });
+
+        const result = await response.json();
+
+        messageBox.classList.remove('d-none');
+
+        if (response.ok && result.success) {
+            messageBox.classList.add('alert-success');
+            messageBox.textContent = result.message;
+            document.getElementById('exclusion-form').reset();
+        } else {
+            messageBox.classList.add('alert-danger');
+            messageBox.textContent = result.message || 'Fehler beim Speichern.';
+        }
+    } catch (error) {
+        messageBox.classList.remove('d-none');
+        messageBox.classList.add('alert-danger');
+        messageBox.textContent = 'Die API konnte nicht erreicht werden.';
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,50 @@
+<!-- app/templates/user.html -->
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-lg-8 mx-auto">
+
+    <!-- Profile header -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <div class="d-flex align-items-start">
+
+          <!-- Avatar -->
+          <img src="{{ user.avatar(128) }}"
+               class="rounded-circle me-4"
+               width="128" height="128"
+               alt="avatar">
+
+          <!-- User info -->
+          <div class="flex-grow-1">
+            <div class="d-flex align-items-center justify-content-between">
+              <h2 class="mb-1">{{ user.username }}</h2>
+
+              {% if user == current_user %}
+                <a href="{{ url_for('edit_profile') }}" class="btn btn-outline-primary btn-sm">
+                  Edit profile
+                </a>
+              {% endif %}
+            </div>
+
+            {% if user.about_me %}
+              <p class="mb-2">{{ user.about_me }}</p>
+            {% endif %}
+
+            {% if user.last_seen %}
+              <div class="text-muted small">
+                Last seen: {{ user.last_seen }}
+              </div>
+            {% endif %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

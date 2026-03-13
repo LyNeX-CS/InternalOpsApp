@@ -1,0 +1,99 @@
+<!-- app/templates/register.html -->
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-5">
+
+    <div class="card shadow-sm">
+      <div class="card-body">
+
+        <h3 class="card-title text-center mb-4">Create Account</h3>
+
+        <form action="" method="post" novalidate>
+          {{ form.hidden_tag() }}
+
+          <!-- Username -->
+          <div class="mb-3">
+            {{ form.username.label(class="form-label") }}
+
+            {% if form.username.errors %}
+              {{ form.username(class="form-control is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.username.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.username(class="form-control") }}
+            {% endif %}
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            {{ form.email.label(class="form-label") }}
+
+            {% if form.email.errors %}
+              {{ form.email(class="form-control is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.email.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.email(class="form-control") }}
+            {% endif %}
+          </div>
+
+          <!-- Password -->
+          <div class="mb-3">
+            {{ form.password.label(class="form-label") }}
+
+            {% if form.password.errors %}
+              {{ form.password(class="form-control is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.password.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.password(class="form-control") }}
+            {% endif %}
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="mb-3">
+            {{ form.password2.label(class="form-label") }}
+
+            {% if form.password2.errors %}
+              {{ form.password2(class="form-control is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.password2.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.password2(class="form-control") }}
+            {% endif %}
+          </div>
+
+          <!-- Submit -->
+          <div class="d-grid">
+            {{ form.submit(class="btn btn-primary") }}
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+
+    <p class="text-center mt-3">
+      Already have an account?
+      <a href="{{ url_for('login') }}">Sign in here</a>
+    </p>
+
+  </div>
+</div>
+
+{% endblock %}

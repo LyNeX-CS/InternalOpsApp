@@ -1,0 +1,24 @@
+<!-- app/templates/index.html -->
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-lg-8 mx-auto">
+
+    <!-- Page header -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+      <div>
+        <h2 class="mb-0">Hi, {{ current_user.username }}!</h2>
+        <div class="text-muted">Welcome to the dashboard.</div>
+      </div>
+    </div>
+
+    <div class="alert alert-light border">
+      You are logged in.
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

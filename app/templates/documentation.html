@@ -1,0 +1,48 @@
+<!-- app/templates/documentation.html -->
+ {% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-lg-8 mx-auto">
+
+    <div class="card shadow-sm">
+      <div class="card-body">
+
+        <h2 class="mb-4">Benutzer Dokumentation</h2>
+
+        <h4>Übersicht</h4>
+        <p>
+          Diese Applikation erlaubt unseren internen Operations Admins, einen 
+          User gezielt von verschiedenen Security Policies temporär zu exkludieren.
+        </p>
+
+        <h4>User temporär von Security Policy Exkludieren</h4>
+        <ol>
+          <li>Navigiere zu <strong>Exclusion Manager</strong>.</li>
+          <li>Gib die E-Mail des zu exkludierenden User ein.</li>
+          <li>Wähle die Security Policy aus, von der der Benutzer exkludiert werden soll.</li>
+          <li>Wähle das Ablaufdatum.</li>
+          <li>Klicke <strong>"Zur Exclusion-Liste hinzufügen"</strong>.</li>
+        </ol>
+
+        <h4>Bestehende Exkludierungen anzeigen</h4>
+        <ol>
+          <li>Navigiere zu <strong>Exclusion Manager</strong>.</li>
+          <li>Klicke auf <strong>"Datenbank auslesen"</strong>.</li>
+          <li>Jetzt werden alle User mit einer aktiven exkludierung angezeigt.</li>
+        </ol>
+
+        <strong>Anmerkung:</strong>
+        <ul>
+          <li>Ausgelaufene exkludierungen werden nicht angeziegt.</li>
+          <li>Ausgelaufene exkludierungen können in der Datenbank nachgeschaut werden.</li>
+        </ul>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
